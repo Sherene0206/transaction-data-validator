@@ -1,0 +1,11 @@
+order_id,customer_name,phone_number,country,order_date,order_time,product_name,quantity,amount,payment_mode
+1001,John Doe,9876543210,India,2025-05-20,14:30:00,Laptop,1,45000.00,Card
+1002,Jane Smith,98765432,Singapore,2025-05-21,10:15:00,Mouse,5,1500.00,UPI
+1003,Bob Johnson,5551234567,USA,2025-05-22,16:45:00,Keyboard,2,3000.00,NetBanking
+1004,Alice Williams,123456789,Malaysia,2025-05-23,11:20:00,Monitor,1,15000.00,Wallet
+1005,Charlie Brown,9876543210,India,2025-05-24,09:00:00,Desk Lamp,3,2500.00,Cash
+1006,Diana Prince,12345,Singapore,2025-05-25,13:40:00,Speaker,1,-500.00,Card
+1007,Ethan Hunt,,USA,2025-05-26,15:30:00,Webcam,2,2000.00,UPI
+1008,Fiona Apple,98765432109,India,2025-05-27,08:00:00,Microphone,1,5000.00,NetBanking
+1009,George Martin,5551234567,USA,2025-05-28,17:45:00,Headphones,1,8000.00,Wallet
+1010,Hannah Montana,9876543210,India,2025-05-29,14:00:00,USB Cable,10,500.00,InvalidMode
