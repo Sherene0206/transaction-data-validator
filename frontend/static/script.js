@@ -37,6 +37,8 @@ const resultErrorBtn = document.getElementById('resultErrorBtn');
 const resultChunkBtn = document.getElementById('resultChunkBtn');
 const resultsSuccess = document.getElementById('resultsSuccess');
 
+const API_BASE = 'https://transaction-data-validator-api.onrender.com';
+
 let pendingFile = null;
 let currentUploadId = null;
 let processingTimer = null;
@@ -164,7 +166,7 @@ function showSection(section) {
 }
 
 function renderDashboard() {
-    fetch('/api/history')
+    fetch(`${API_BASE}/api/history`)
         .then((response) => response.json())
         .then((history) => {
             const uploads = Array.isArray(history) ? history : [];
@@ -303,7 +305,7 @@ function startProcessing() {
     const formData = new FormData();
     formData.append('file', pendingFile);
 
-    fetch('/upload', { method: 'POST', body: formData })
+    fetch(`${API_BASE}/upload`, { method: 'POST', body: formData })
         .then(async (response) => {
             const data = await response.json();
             if (!response.ok) {
@@ -337,7 +339,7 @@ function updateProcessingMessage() {
 
 function loadResult(uploadId) {
     resultsSuccess.classList.add('d-none');
-    fetch(`/api/results/${encodeURIComponent(uploadId)}`)
+    fetch(`${API_BASE}/api/results/${encodeURIComponent(uploadId)}`)
         .then(async (response) => {
             const data = await response.json();
             if (!response.ok) {
@@ -399,14 +401,19 @@ function renderErrorPreview(errors) {
 }
 
 function renderResultDownloads(data) {
-    resultCleanBtn.href = data.clean_file || '#';
-    resultErrorBtn.href = data.error_file || '#';
+    const resolveDownloadUrl = (path) => {
+        if (!path) return '#';
+        return path.startsWith('http') ? path : `${API_BASE}${path}`;
+    };
+
+    resultCleanBtn.href = resolveDownloadUrl(data.clean_file);
+    resultErrorBtn.href = resolveDownloadUrl(data.error_file);
     resultCleanBtn.setAttribute('download', data.clean_file ? data.clean_file.split('/').pop() : 'cleaned_transactions.csv');
     resultErrorBtn.setAttribute('download', data.error_file ? data.error_file.split('/').pop() : 'validation_errors.csv');
 
     if (data.chunk_zip) {
         resultChunkBtn.classList.remove('d-none');
-        resultChunkBtn.href = data.chunk_zip;
+        resultChunkBtn.href = resolveDownloadUrl(data.chunk_zip);
         resultChunkBtn.setAttribute('download', data.chunk_zip.split('/').pop());
     } else {
         resultChunkBtn.classList.add('d-none');
